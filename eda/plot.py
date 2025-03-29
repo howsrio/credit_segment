@@ -22,7 +22,8 @@ def plot_segment_grid(dfs : list,
                       col : str, 
                       months = None, 
                       segment_col='Segment', 
-                      subfigsize=(4, 4)):
+                      subfigsize=(4, 4),
+                      categorical_plot_type = "pie"):
     """
     월별 데이터프레임들에서 Segment별로 주어진 컬럼(col)의 시각화를 5xN 형태로 출력하는 함수.
     
@@ -32,8 +33,10 @@ def plot_segment_grid(dfs : list,
         months (list of str): 각 데이터프레임에 대응되는 월 이름 리스트
         segment_col (str): 세그먼트 컬럼 이름 (기본값 'Segment')
         subfigsize (tuple): 그림 하나의 크기 (가로, 세로)
+        categorical_plot_type (str): "pie" or "bar"
     """
 
+    # 폰트 설정
     set_fonts()
     
     # 입력받은 데이터프레임의 갯수 확인
@@ -86,11 +89,24 @@ def plot_segment_grid(dfs : list,
             
             # 이진형, 범주형
             else:
-                counts = sub_df.value_counts()
-                ax.pie(counts, 
-                       labels=counts.index.astype(str), 
-                       autopct='%1.1f%%',
-                       textprops={'fontsize': 18})
+                counts = sub_df.value_counts(normalize=True).sort_index()
+
+                if categorical_plot_type == 'pie':
+                    ax.pie(counts, 
+                           labels=counts.index.astype(str), 
+                           autopct='%1.1f%%', 
+                           textprops={'fontsize': 18})
+                    
+                elif categorical_plot_type == 'bar':
+                    ax.bar(counts.index.astype(str), 
+                           counts.values, 
+                           color=sns.color_palette("pastel", len(counts)))
+                    ax.set_ylim(0, 1)
+                    ax.set_xticks(range(len(counts)))
+                    ax.set_xticklabels(counts.index.astype(str))
+
+                else:
+                    raise ValueError(f"cat_plot_type must be 'pie' or 'bar', but got '{categorical_plot_type}'")
             
             ax.set_title(f"{segment} - {month}", fontsize=10)
     
