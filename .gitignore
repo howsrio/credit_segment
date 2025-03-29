@@ -1,1 +1,17 @@
 /data
+
+# Python 캐시 파일 무시
+__pycache__/
+*.py[cod]
+
+# 주피터 노트북 체크포인트 무시
+.ipynb_checkpoints/
+
+# eda 폴더 안의 캐시와 체크포인트도 포함해서 무시
+eda/__pycache__/
+eda/.ipynb_checkpoints/
+
+# 기타 IDE 관련 (옵션)
+.vscode/
+*.env
+*.DS_Store

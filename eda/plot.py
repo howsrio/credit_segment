@@ -87,7 +87,10 @@ def plot_segment_grid(dfs : list,
             # 이진형, 범주형
             else:
                 counts = sub_df.value_counts()
-                ax.pie(counts, labels=counts.index.astype(str), autopct='%1.1f%%')
+                ax.pie(counts, 
+                       labels=counts.index.astype(str), 
+                       autopct='%1.1f%%',
+                       textprops={'fontsize': 18})
             
             ax.set_title(f"{segment} - {month}", fontsize=10)
     
