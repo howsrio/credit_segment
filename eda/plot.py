@@ -20,8 +20,9 @@ def set_fonts():
 
 def plot_segment_grid(dfs : list, 
                       col : str, 
+                      is_categorical = True,
                       months = None, 
-                      segment_col='Segment', 
+                      segment_col='Segment',
                       subfigsize=(4, 4),
                       categorical_plot_type = "pie"):
     """
@@ -30,6 +31,7 @@ def plot_segment_grid(dfs : list,
     Parameters:
         dfs (list): 월별 데이터프레임들의 리스트
         col (str): 시각화할 컬럼 이름
+        is_categorical (bool) : 해당 변수가 categorical 변수인지, else : 수치형
         months (list of str): 각 데이터프레임에 대응되는 월 이름 리스트
         segment_col (str): 세그먼트 컬럼 이름 (기본값 'Segment')
         subfigsize (tuple): 그림 하나의 크기 (가로, 세로)
@@ -80,7 +82,7 @@ def plot_segment_grid(dfs : list,
             n_unique = len(unique_vals)
             
             # 연속형
-            if pd.api.types.is_numeric_dtype(sub_df) and n_unique > 10:
+            if not is_categorical:
                 sns.boxplot(y=sub_df, ax=ax)
                 if global_min is not None and global_max is not None:
                     ax.set_ylim(global_min, global_max)
