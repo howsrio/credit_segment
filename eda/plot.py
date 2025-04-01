@@ -78,9 +78,6 @@ def plot_segment_grid(dfs : list,
                 ax.axis('off')
                 continue
             
-            unique_vals = sub_df.unique()
-            n_unique = len(unique_vals)
-            
             # 연속형
             if not is_categorical:
                 sns.boxplot(y=sub_df, ax=ax)
