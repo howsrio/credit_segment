@@ -24,6 +24,7 @@ def plot_segment_grid(dfs : list,
                       months = None, 
                       segment_col='Segment',
                       subfigsize=(4, 4),
+                      numeric_plot_type = "box",
                       categorical_plot_type = "pie"):
     """
     월별 데이터프레임들에서 Segment별로 주어진 컬럼(col)의 시각화를 5xN 형태로 출력하는 함수.
@@ -80,12 +81,19 @@ def plot_segment_grid(dfs : list,
             
             # 연속형
             if not is_categorical:
-                sns.boxplot(y=sub_df, ax=ax)
-                if global_min is not None and global_max is not None:
-                    ax.set_ylim(global_min, global_max)
-                ax.set_ylabel('')
-                ax.set_xlabel('')
+                if numeric_plot_type == 'box':
+                    sns.boxplot(y=sub_df, ax=ax)
+                    if global_min is not None and global_max is not None:
+                        ax.set_ylim(global_min, global_max)
+                    ax.set_ylabel('')
+                    ax.set_xlabel('')
             
+                elif numeric_plot_type == 'hist':
+                    ax.hist(sub_df, bins='auto', color='skyblue', edgecolor='black')
+                    if global_min is not None and global_max is not None:
+                        ax.set_xlim(global_min, global_max)
+                    ax.set_ylabel('')
+                    ax.set_xlabel(col)
             # 이진형, 범주형
             else:
                 counts = sub_df.value_counts(normalize=True).sort_index()
